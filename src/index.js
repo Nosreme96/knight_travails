@@ -2,6 +2,7 @@ import './styles.css';
 import printMe from './print.js';
 printMe();
 console.log('hello');
+//Knight object 
 class Node {
     constructor(data = null) {
         this.data = data;
@@ -17,6 +18,7 @@ class Node {
     }
 
 }
+//Convert knight to tree object and initialize other possible moves as knight objects
 class Tree {
     constructor(root = null) {
         this.root = root;
@@ -30,6 +32,7 @@ class Tree {
         this.eight = new Node([root.data[0]-2, root.data[1]-1]);
 
     }
+    //checks if the position exists in the 8 x 8 board
     check() {
         let ele1 = this.root.data[0];
         let ele2 = this.root.data[1]
@@ -38,18 +41,24 @@ class Tree {
         } else return false;
     }
 }
+//check knight position array equality with target position array
 function arraysEqual (arr1,arr2) {
     const json1 = JSON.stringify(arr1);
     const json2 = JSON.stringify(arr2);
     return json1 ==json2;
 }
+//main logic funtion
 function knightMoves(origin, target) {
+    //initialize the origin as a knight node, use it as a tree root if it exists and push to queue
+    //returns the target node with its last parent as the origin
     let knight = new Node(origin);
     let moveTree = new Tree(knight);
     console.log(moveTree);
     let queue = [moveTree];
     var cont = true;
     let count = 0
+    if(arraysEqual(origin, target))
+    return 'You are already there!';
     while(queue.length !== 0 && cont == true) {
         count+=1;
         console.log(count);
@@ -57,6 +66,8 @@ function knightMoves(origin, target) {
         console.log('entered loop')
         console.log(queue[0]);
         console.log(queue[0].check());
+        //check if tree root data exists on board then set as parent to children
+        //if not, remove from queue immediately
         if(queue[0].check(queue[0].root)) {
             console.log('start of loop');
             queue[0].one.parent = queue[0];
@@ -68,8 +79,8 @@ function knightMoves(origin, target) {
             queue[0].seven.parent = queue[0];
             queue[0].eight.parent = queue[0];
             console.log(queue[0])
+        //check each children's data for match
             if(arraysEqual(queue[0].one.data, target)) {
-                alert(queue[0].one.data);
                 cont = false;
                 console.log(cont);
                 const newTree = new Tree (queue[0].one);
@@ -79,7 +90,6 @@ function knightMoves(origin, target) {
                 queue.push(newTree);
             }
             if(arraysEqual(queue[0].two.data, target)) {
-                alert(queue[0].two.data);
                 cont = false;
                 console.log(cont);
                 const newTree = new Tree (queue[0].two);
@@ -89,8 +99,6 @@ function knightMoves(origin, target) {
                 queue.push(newTree);
             }
             if(arraysEqual(queue[0].three.data, target)) {
-                alert(queue[0].three.data);
-
                 cont = false;
                 console.log(cont);
                 const newTree = new Tree (queue[0].three);
@@ -100,8 +108,6 @@ function knightMoves(origin, target) {
                 queue.push(newTree);
             }
             if(arraysEqual(queue[0].four.data, target)) {
-                alert(queue[0].four.data);
-
                 cont = false;
                 console.log(cont);
                 const newTree = new Tree (queue[0].four);
@@ -111,8 +117,6 @@ function knightMoves(origin, target) {
                 queue.push(newTree);
             }
             if(arraysEqual(queue[0].five.data, target)) {
-                alert(queue[0].five.data);
-
                 cont = false;
                 console.log(cont);
                 const newTree = new Tree (queue[0].five);
@@ -122,8 +126,6 @@ function knightMoves(origin, target) {
                 queue.push(newTree);
             }
             if(arraysEqual(queue[0].six.data, target)) {
-                alert(queue[0].six.data);
-
                 cont = false;
                 console.log(cont);
                 const newTree = new Tree (queue[0].six);
@@ -133,8 +135,6 @@ function knightMoves(origin, target) {
                 queue.push(newTree);
             }
             if(arraysEqual(queue[0].seven.data, target)) {
-                alert(queue[0].seven.data);
-
                 cont = false;
                 console.log(cont);
                 const newTree = new Tree (queue[0].seven);
@@ -144,8 +144,6 @@ function knightMoves(origin, target) {
                 queue.push(newTree);
             }
             if(arraysEqual(queue[0].eight.data, target)) {
-                alert(queue[0].eight.data);
-
                 cont = false;
                 console.log(cont);
                 const newTree = new Tree (queue[0].eight);
@@ -159,12 +157,19 @@ function knightMoves(origin, target) {
     queue.shift();
 }
 }
-let answer = knightMoves([3,3], [4,3]);
-printMoves(answer);
+let answer = knightMoves([0,0],[7,7]);
+var path = [];
+function getPath(tree){
+    path = [];
+    printMoves(tree);
+}
 function printMoves(tree){
-    if(tree.root.parent != null) {
-        console.log(tree.root.data);
+    if(tree.root.data !== null) {
+       path.unshift(tree.root.data);
+        if(tree.root.parent !== null)
         printMoves(tree.root.parent);
     }
 }
+getPath(answer);
+console.log(path);
 console.log('hello there ulet!');
